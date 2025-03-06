@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <title>Mini-games</title>
+    <style>
+        .back_button {
+            background-color: transparent;
+            border-radius: 999px;
+            border: none;
+            transition: 0.5s;
+            height: 50px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        img {
+            height: 40px;
+        }
+        .back_button:hover {
+            background-color: grey;
+            opacity: 0.8;
+        }
+        .rock_paper_scissors_game , .randomgen{
+            display: inline-block;
+            text-align: center;
+            height: 250px;
+            width: 400px;
+            border: 1px black solid;
+            position: absolute;
+        }
+        .randomgen{
+            margin-left: 500px;
+        }
+        .p_rps {
+            margin: 0;
+        }
+        .button_rps {
+            border-radius: 999px;
+            height: 100px;
+            width: 100px;
+            margin: 10px;
+            border: none;
+        }
+        .show_results {
+            background-color: transparent;
+            border-radius: 10px;
+            border: 1px black solid;
+            height: 50px;
+            width: 150px;
+        }
+        .show_results:hover {
+            border: 1px white solid;
+            color: white;
+            background-color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <button class="back_button" id="back_button"  onclick="minigames()"><img src="pictures/button_back.png"></button>
+    <hr>
+    <div class="rock_paper_scissors_game" id="div_rps">
+        <p class="p_rps">Rock Paper Scissors</p><br>
+        <button class="button_rps" onclick="rock_ps()"><img src="pictures/rock.png"></button>
+        <button class="button_rps" onclick="paper()"><img src="pictures/paper.png"></button>
+        <button class="button_rps" onclick="scissors()"><img src="pictures/scissors.png"></button>
+        <button class="show_results" onclick="show_results()">Show results</button>
+        <p id="results"></p> <!-- Separate paragraph for results -->
+    </div>
+    <div class="randomgen">
+        <p class="rg">Random generator</p><br>
+        <input placeholder="Type how long should your digit be." type="number" id="longnumber">
+        <button onclick="generateRandom()">Generate</button>
+        <p id="generatedNumber"></p> <!-- This will display the generated number -->
+    </div>
+   
+    
+    <script>
+        function minigames(){
+            window.location.href = "Main_page.html";
+        }
+        let youWin = 0, IWin = 0, ties = 0;
+
+        function rock_ps() {
+            let x = Math.random();
+            if (x <= 1/3) {
+                ties++;
+            } else if (x <= 2/3) {
+                youWin++;
+            } else {
+                IWin++;
+            }
+        }
+
+        function paper() {
+            let x = Math.random();
+            if (x <= 1/3) {
+                IWin++;
+            } else if (x <= 2/3) {
+                ties++;
+            } else {
+                youWin++;
+            }
+        }
+
+        function scissors() {
+            let x = Math.random();
+            if (x <= 1/3) {
+                youWin++;
+            } else if (x <= 2/3) {
+                IWin++;
+            } else {
+                ties++;
+            }
+        }
+
+        function show_results() {
+            document.getElementById("results").textContent = 
+                `You win: ${youWin} | I win: ${IWin} | Tie: ${ties}`;
+        }
+        
+        function generateRandom() {
+    let longness = Number(document.getElementById('longnumber').value);
+    if (longness > 0 && longness < 309) {
+        let randomnumber = Math.floor(Math.random() * Math.pow(10, longness));
+        console.log(randomnumber);
+        document.getElementById('generatedNumber').textContent = "Generated Number: " + randomnumber; // Display the number in HTML
+    } else {
+        document.getElementById('generatedNumber').textContent = "Please enter a valid number greater than 0 or smaller than 309."; // Error message in HTML
+    }
+}
+
+
+    </script>
+</body>
+</html>

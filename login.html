@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Science is Fun</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="pictures/logo-dark.ico">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: "Oswald", sans-serif;
+            color: #000000;
+            margin: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .login-container button {
+            padding: 10px 20px;
+            background-color: rgb(0, 187, 255);
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #36a8f5;
+        }
+
+        .profile-pic-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: 10px;
+        }
+        h2 {
+            padding: 0;
+            margin-left: 0;
+            margin-right: auto;
+            text-align: left;
+            font-size: 20px;
+                }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 id="formTitle">Login</h1>
+        <h2>Username</h2>
+        <input type="text" id="username" placeholder="Username" aria-label="Username" required>
+        <h2>Email</h2>
+        <input type="email" id="email" placeholder="Email" aria-label="Email" required>
+        <h2>Password</h2>
+        <input type="password" id="password" placeholder="Password" aria-label="Password" required>
+        <input type="file" id="profilePicture" aria-label="Profile Picture" class="Profilepicbutton" placeholder="Profile picture" accept="image/*">
+        <img id="profilePicPreview" class="profile-pic-preview" src="" alt="Profile Picture Preview" />
+        <button onclick="saveProfile()">Save</button>
+    </div>
+
+    <script>
+       // Show profile picture preview before saving
+document.getElementById('profilePicture').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        document.getElementById('profilePicPreview').src = e.target.result;
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+});
+
+// Load the profile picture from localStorage when the page is loaded
+window.onload = function() {
+    const profilePicture = localStorage.getItem("profilePicture");
+
+    if (profilePicture) {
+        document.getElementById('profilePicPreview').src = profilePicture;
+    }
+};
+
+function saveProfile() {
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const profilePicture = document.getElementById("profilePicture").files[0];
+
+    if (username && email && password) {
+        if (profilePicture) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const profilePictureData = event.target.result;
+                localStorage.setItem("profilePicture", profilePictureData);
+                saveUserData(username, email, password, profilePictureData);
+                window.location.href = "Main_page.html"; // Redirect after saving
+            };
+            reader.readAsDataURL(profilePicture);
+        } else {
+            saveUserData(username, email, password);
+            window.location.href = "Main_page.html"; // Redirect after saving
+        }
+    } else {
+        alert("Please fill in all fields.");
+    }
+}
+
+function saveUserData(username, email, password, profilePicture) {
+    localStorage.setItem("username", username);
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
+    if (profilePicture) {
+        localStorage.setItem("profilePicture", profilePicture);
+    }
+}
+
+    </script>
+</body>
+</html>

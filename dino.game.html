@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head><title>DINO GAME</title>
+<style>
+    #score{
+            text-align: center;
+        }
+        #dgame{
+            width: 400px;
+            height: 250px;
+            border: 1px black solid;
+            position: absolute;
+            margin-left: 1000px;
+            background-image: url("https://st3.depositphotos.com/5479200/14902/v/450/depositphotos_149023447-stock-illustration-cartoon-forest-game-background-landscape.jpg");
+            background-size: cover;
+        }
+        #dino{
+            height: 75px;
+            width: 75px;
+            position: relative;
+            top: 94px;
+            background-image: url("pictures/dino_pic.png");
+            background-size: cover;
+        }
+        #rock{
+            height: 50px;
+            width: 50px;
+            position: relative;
+            top: 44px;
+            background-image: url("pictures/rock_minigame.png");
+            background-size: cover;
+            left:350px ;
+            animation: rock 2s infinite;
+        }
+        @keyframes rock {
+            0%{left: 350px;}
+            100%{left: -50px;}
+        }
+        .jump-animation {
+            animation: jump 0.5s;
+        }
+        @keyframes jump {
+            0%{top: 94px;}
+            50%{top: 20px;}
+            75%{top: 20px;}
+            100%{top:94px;}
+        } 
+</style>
+</head>
+<body> 
+    <div id="dgame">
+    <h1 id="score">0</h1>
+    <div id="dino"></div>
+    <div id="rock"></div>
+</div>
+<script>
+    const dino = document.getElementById('dino');
+const rock = document.getElementById('rock');
+const score = document.getElementById('score');
+function jump(){
+    dino.classList.add('jump-animation');
+    setTimeout(() =>{
+        dino.classList.remove('jump-animation');
+    }, 500);
+};
+document.addEventListener('keypress', () => {
+    if (!dino.classList.contains('jump-animation')){
+            jump();
+    }
+
+});
+setInterval(() => {
+    score.innerText++
+    const dinoTop = parseInt(window.getComputedStyle(dino)
+    .getPropertyValue('top'));
+    const rockLeft = parseInt(window.getComputedStyle(rock)
+    .getPropertyValue('left'));
+    if (rockLeft < 0){
+        rock.style.display = 'none';
+    }
+        else {
+            rock.style.display = '';
+        }
+
+    if (rockLeft < 50 && rockLeft > 0 && dinoTop > 50 ) {
+            alert("You got a score of:" +  score.innerText);
+            location.reload();
+        }
+
+
+
+}, 50);
+</script>
+</body>
+</html>

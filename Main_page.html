@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science is Fun</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="pictures/logo-dark.ico">
+    <style>
+          body {
+            font-family: "Oswald", sans-serif;
+            background-image: url("pictures/background-grey-honey.png");
+            margin: 0;
+            background-color: #f0f0f0;
+        } 
+        html{
+            height: 100%;
+            background-image: url("pictures/background-grey-honey.png");
+        }
+        header {
+            background-color: rgba(82, 184, 239 );
+            height: 87px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .searchForm button {
+                border: none;
+                background: none;
+                color: #8b8ba7;
+        }
+        .searchForm {
+                --timing: 0.3s;
+                --width-of-input: 150px;
+                --height-of-input: 40px;
+                --border-height: 2px;
+                --input-bg: #fff;
+                --border-color: #2f2ee9;
+                --border-radius: 30px;
+                --after-border-radius: 1px;
+                position: relative;
+                width: 925px;
+                height: var(--height-of-input);
+                display: flex;
+                align-items: center;
+                padding-inline: 0.8em;
+                border-radius: var(--border-radius);
+                transition: border-radius 0.5s ease;
+                background: var(--input-bg,#fff);
+                margin-left: 10%;
+        }
+        .input {
+                font-size: 0.9rem;
+                background-color: transparent;
+                width: 100%;
+                height: 100%;
+                padding-inline: 0.5em;
+                padding-block: 0.7em;
+                border: none;
+        }
+        .searchForm:before {
+            content: "";
+            position: absolute;
+            background: var(--border-color); 
+            transform: scaleX(0);
+            transform-origin: center;
+            width: 100%;
+            height: var(--border-height);
+            left: 0;
+            bottom: 0;
+            border-radius: 1px;
+            transition: transform var(--timing) ease;
+        }
+        .searchForm:focus-within {
+            border-radius: var(--after-border-radius);
+        }   
+        input:focus {
+            outline: none;
+        }
+        .searchForm:focus-within:before {
+            transform: scale(1);
+        }   
+        .reset {
+            border: none;
+            background: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+        input:not(:placeholder-shown) ~ .reset {
+            opacity: 1;
+            visibility: visible;
+        }   
+        .searchForm svg {
+            width: 17px;
+            margin-top: 3px;
+        }  
+        #searchResults{
+            margin-top: 80px;
+            padding: 10px;
+            z-index: 1;
+        }
+
+        
+      
+        
+        .Science_is_fun{
+            font-family: "Oswald", sans-serif;
+            font-size: 30px;
+         color: white;
+         font-weight: bold;
+         margin-left: 5%;
+         cursor: pointer;
+         position: absolute;
+         
+        }
+        .Language_Globe{
+            height: 50px;
+            max-height: 100%; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .More_button{
+            height: 50px;
+            max-height: 40%; 
+        }
+        .Language_Globe_button{
+            background-color: transparent;
+            border: none;
+            align-items: center; 
+            justify-content: center;
+            height: 60px; 
+            cursor: pointer;
+            margin-right: 0%;
+            margin-left: 1320px;
+            position:relative
+        }
+        .More_button_button{
+            width: 4%;
+            margin-left: -3%;
+            height: 100%;
+            background-color: transparent;
+            border: none;
+        }
+        .Language_Globe_button:hover{
+            opacity: 0.7;
+        }
+        .More_button_button:hover{
+            opacity: 0.7;
+        }
+          #more { 
+            visibility: hidden;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            z-index: 100;
+        }
+          
+        
+        .more{
+            width: 150px;
+            margin-right: 0;
+            margin-top: 0;
+            padding: 0;
+            height: 50px;
+            border-radius: 0px;
+            color: #000000;
+            font-size: 20px;
+            background-color: rgba(82, 184, 239);
+            border: 1px black solid ;
+        } 
+         .more:hover{
+            background-color: #36a8f5;
+            cursor: pointer;
+        }
+        .morelanguages{
+            margin-left: 1568px;
+
+        }
+        .more_div , .morelanguages{
+            width: 150px;
+            visibility: hidden;
+            position:absolute;
+            z-index: 100;
+        }
+        .more_div{
+            right: 0px;
+        }
+        #more_div.visible , #morelanguages.visible {
+            visibility: visible;
+            z-index: 100;
+            display: flex
+        }
+        #searchResults{
+            display: grid;
+            position: absolute;
+        }
+        .center-button {
+            position: fixed;
+            bottom: 40%;
+            left: 50%;
+            height: 60px;
+            transform: translateX(-50%);
+            z-index: 500;
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: rgba(82, 184, 239);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            animation: center-button 1s;
+        }
+        @keyframes center-button{
+            0%{top: 55% }
+            50%{top: 50%}
+            100%{top: 55%;}
+        }
+        /* Change center button background color on hover */
+        .center-button:hover {
+            background-color: #3a9ed9;
+        }
+
+       
+        footer{
+            position: absolute;
+            bottom: 0%;
+            height:113px;
+            background-color: rgb(0, 187, 255);
+            width: 100%;
+        }
+        .profile_account {
+            width: 150px;
+            margin-right: 0;
+            margin-top: 0;
+            padding: 0;
+            height: 100px;
+            border-radius: 0px;
+            color: #000000;
+            font-size: 20px;
+            background-color: rgba(82, 184, 239);
+            border: 1px black solid;
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-info-container {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center items horizontally */
+            padding: 10px;
+        }
+
+        .profile-dropdown img{
+            width: 40px;
+            height: 40px;
+        }
+        .profile-dropdown{
+            background-color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            padding: 5px;
+        }
+        .profile-dropdown span {
+            font-size: 16px;
+        }
+        </style>
+</head>
+  <div id="searchResults"></div>
+<body>
+    <header>
+        <img src="pictures/logoford-white.png" style=" height: 70px;width: 70px;transition: content 0.5s ease;"><a class="Science_is_fun" onclick="reload()" id="mainTitle">Science is Fun</a>
+      <!--<form id="searchForm" class="searchForm">
+            <button type="submit">
+                <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
+                    <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+            <input class="input" placeholder="Type your text" required="" type="text" id="searchInput" >
+            <button class="reset" type="reset">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </form>-->  
+        <button class="Language_Globe_button" onclick="morelanguages()"><img src="pictures/Language_globe.png" class="Language_Globe"></button>
+        <button class="More_button_button" onclick="settings()"><img src="pictures/Settings.png" class="More_button"></button>
+    </header>
+    <div id="buttonContainer" class="container">
+        <div id="morelanguages" class="morelanguages">
+            <button  id="bulgarianLang" class="more" onclick="setLanguage('bg')"><img src="pictures/Bulgarianflag.png" width="20px" >Български</button>
+            <button  id="germanLang" class="more" onclick="setLanguage('de')"><img src="pictures/German_flag.png" width="20px" > Deutsch </button>
+            <button  id="englishLang" class="more" onclick="setLanguage('en')"><img src="pictures/gb.png" width="20px" >English</button>
+            <button  id="turkishLang" class="more" onclick="setLanguage('tr')"><img src="pictures/tyr.png" width="20px" >Turkish</button>
+            <button  id="frenchLang" class="more" onclick="setLanguage('fr')"><img src="pictures/fr.png" width="20px" >French</button>
+         </div>
+         <div id="more_div" class="more_div" >
+            <button class="profile_account">        
+                <div class="profile-dropdown" id="profileDropdown">
+                    <img id="profilePicture" src="" alt="Profile Picture" class="profilepicture" class="inline-block">
+                    <img src="pictures/settings.icon.png" href="https://www.youtube.com/" style="width: 40px; height: 40px; display: inline-block; position: absolute; margin-left: 40px;">
+                    <div class="profile-info">
+                        </div><span id="username"></span>
+                    <button onclick="editProfile()" class="more">Edit Information</button>
+                </div>
+            </button>
+    </div>
+    
+    <button class="center-button" id="experimentsCenterBtn" aria-label="Experiments" onclick="openExperimentsPage()">Experiments</button>
+    <!--<footer>GUIYGYUGVUYVU^TYJ</footer>-->
+</body>
+<script>
+    function editProfile() {
+        window.location.href = "login.html";
+    }
+
+    const username = localStorage.getItem("username");
+    const profilePicture = localStorage.getItem("profilePicture");
+
+    if (username) {
+        document.getElementById("username").textContent = username;
+    }
+    if (profilePicture) {
+        document.getElementById("profilePicture").src = profilePicture;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/blackholes/search?q=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const results = await response.json();
+
+                searchResults.innerHTML = results.length
+                    ? results.map(item => `
+                        <div>
+                            <h3>${item.title}</h3>
+                            <p>${item.content}</p>
+                        </div>
+                    `).join('')
+                    : '<p>No results found</p>';
+            } catch (error) {
+                console.error('Search error:', error);
+                searchResults.innerHTML = '<p>Error searching.</p>';
+            }
+        });
+    });
+    function openMinigames(){
+        window.location.href = "Mini_games.html";
+    }
+    function openExperimentsPage() {
+            window.location.href = "experiments.html";
+        }
+    function alignButtons(){
+    const container = document.getElementById("buttonContainer");
+    container.style.display = "flex"; 
+}
+    function morelanguages() {
+    toggleVisibility("morelanguages");
+}
+    function settings() {
+    toggleVisibility("more_div");
+}
+    function toggleVisibility(id) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.style.visibility = (element.style.visibility === "hidden" || element.style.visibility === "") ? "visible" : "hidden";
+    }
+}
+    window.onload = function() {
+            const username = localStorage.getItem("username");
+            const email = localStorage.getItem("email");
+            const profilePicture = localStorage.getItem("profilePicture");
+        };
+        const translations = {
+        en: {
+            mainTitle: "Science is Fun",
+            experimentsBtn: "Back to Main Page",
+            phybutton: "Physics",
+            biobutton: "Biology",
+            expbutton: "Mini games",
+            shareExperimentsTitle: "Share Your Experiments",
+            chemistryCategory: "Chemistry",
+            physicsCategory: "Physics",
+            mathematicsCategory: "Mathematics",
+            biologyCategory: "Biology",
+            engineeringCategory: "Engineering",
+            newPostTitle: "New Post",
+            postButton: "Post",
+            settingsBtn: "Settings",
+            searchPlaceholder: "Type your text",
+            postTitlePlaceholder: "Title",
+            postContentPlaceholder: "Share your experiment...",
+            postYoutubePlaceholder: "YouTube Video URL"
+
+        },
+        bg: {
+            mainTitle: "Науката е Забавна",
+            experimentsBtn: "Назад към Главната страница",
+            phybutton: "Физика",
+            biobutton: "Биология",
+            expbutton: "Мини игри",
+            shareExperimentsTitle: "Споделете Вашите Експерименти",
+            chemistryCategory: "Химия",
+            physicsCategory: "Физика",
+            mathematicsCategory: "Математика",
+            biologyCategory: "Биология",
+            engineeringCategory: "Инженерство",
+            newPostTitle: "Нова Публикация",
+            postButton: "Публикувай",
+            settingsBtn: "Настройки",
+            searchPlaceholder: "Въведете текст",
+            postTitlePlaceholder: "Заглавие",
+            postContentPlaceholder: "Споделете вашия експеримент...",
+            postYoutubePlaceholder: "URL на YouTube видео"
+        },
+        tr: {
+            mainTitle: "Bilim Eğlencelidir",
+            experimentsBtn: "Ana Sayfaya Geri Dön",
+            phybutton: "Fizik",
+            biobutton: "Biyoloji",
+            expbutton: "Mini oyunlar",
+            shareExperimentsTitle: "Deneylerinizi Paylaşın",
+            chemistryCategory: "Kimya",
+            physicsCategory: "Fizik",
+            mathematicsCategory: "Matematik",
+            biologyCategory: "Biyoloji",
+            engineeringCategory: "Mühendislik",
+            newPostTitle: "Yeni Gönderi",
+            postButton: "Gönder",
+            settingsBtn: "Ayarlar",
+            searchPlaceholder: "Metninizi yazın",
+            postTitlePlaceholder: "Başlık",
+            postContentPlaceholder: "Deneyinizi paylaşın...",
+            postYoutubePlaceholder: "YouTube Video URL'si"
+        },
+        de: {
+            mainTitle: "Wissenschaft macht Spaß",
+            experimentsBtn: "Zurück zur Hauptseite",
+            phybutton: "Physik",
+            biobutton: "Biologie",
+            expbutton: "Minispiele",
+            shareExperimentsTitle: "Teilen Sie Ihre Experimente",
+            chemistryCategory: "Chemie",
+            physicsCategory: "Physik",
+            mathematicsCategory: "Mathematik",
+            biologyCategory: "Biologie",
+            engineeringCategory: "Ingenieurwesen",
+            newPostTitle: "Neuer Beitrag",
+            postButton: "Posten",
+            settingsBtn: "Einstellungen",
+            searchPlaceholder: "Geben Sie Ihren Text ein",
+            postTitlePlaceholder: "Titel",
+            postContentPlaceholder: "Teilen Sie Ihr Experiment...",
+            postYoutubePlaceholder: "YouTube-Video-URL"
+        },
+        fr: {
+            mainTitle: "La science est amusante",
+            experimentsBtn: "Retour à la page principale",
+            phybutton: "Physique",
+            biobutton: "Biologie",
+            expbutton: "Mini-jeux",
+            shareExperimentsTitle: "Partagez Vos Expériences",
+            chemistryCategory: "Chimie",
+            physicsCategory: "Physique",
+            mathematicsCategory: "Mathématiques",
+            biologyCategory: "Biologie",
+            engineeringCategory: "Ingénierie",
+            newPostTitle: "Nouveau Message",
+            postButton: "Publier",
+            settingsBtn: "Paramètres",
+            searchPlaceholder: "Tapez votre texte",
+            postTitlePlaceholder: "Titre",
+            postContentPlaceholder: "Partagez votre expérience...",
+            postYoutubePlaceholder: "URL de vidéo YouTube"
+        }
+    };
+
+    function setLanguage(lang) {
+        console.log("setLanguage called with:", lang);
+        const currentLangTranslations = translations[lang];
+        document.getElementById("mainTitle").textContent = currentLangTranslations.mainTitle;
+        document.getElementById("experimentsCenterBtn").textContent = currentLangTranslations.experimentsBtn;
+        document.getElementById("phybutton").textContent = currentLangTranslations.phybutton;
+        document.getElementById("biobutton").textContent = currentLangTranslations.biobutton;
+        document.getElementById("expbutton").textContent = currentLangTranslations.expbutton;
+        document.getElementById("shareExperimentsTitle").textContent = currentLangTranslations.shareExperimentsTitle;
+        document.getElementById("chemistryCategory").textContent = currentLangTranslations.chemistryCategory;
+        document.getElementById("physicsCategory").textContent = currentLangTranslations.physicsCategory;
+        document.getElementById("mathematicsCategory").textContent = currentLangTranslations.mathematicsCategory;
+        document.getElementById("biologyCategory").textContent = currentLangTranslations.biologyCategory;
+        document.getElementById("engineeringCategory").textContent = currentLangTranslations.engineeringCategory;
+        document.getElementById("newPostTitle").textContent = currentLangTranslations.newPostTitle;
+        document.getElementById("postButton").textContent = currentLangTranslations.postButton;
+        document.getElementById("settingsBtn").textContent = currentLangTranslations.settingsBtn;
+        document.getElementById("searchInput").placeholder = currentLangTranslations.searchPlaceholder;
+        document.getElementById("postTitle").placeholder = currentLangTranslations.postTitlePlaceholder;
+        document.getElementById("postContent").placeholder = currentLangTranslations.postContentPlaceholder;
+        document.getElementById("postYoutube").placeholder = currentLangTranslations.postYoutubePlaceholder;
+
+    }
+</script>
+</html>

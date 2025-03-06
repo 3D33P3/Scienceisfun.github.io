@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiments Forum</title>
+    <link rel="stylesheet" href="experiments.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="pictures/logo-dark.ico">
+</head>
+<body>
+    <header>
+        <img src="pictures/logoford-white.png" style=" height: 70px;width: 70px;transition: content 0.5s ease;"><a id="mainTitle" class="Science_is_fun" onclick="reload()">Science is Fun</a>
+        <form id="searchForm" class="searchForm">
+            <button type="submit">
+                <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
+                    <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+            <input class="input" placeholder="Type your text" required="" type="text" id="searchInput" >
+            <button class="reset" type="reset">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </form>
+        <button class="Language_Globe_button" onclick="morelanguages()"><img src="pictures/Language_globe.png" class="Language_Globe"></button>
+        <button class="More_button_button" onclick="settings()"><img src="pictures/Settings.png" class="More_button"></button>
+    </header>
+    <div id="buttonContainer" class="container">
+        <div id="morelanguages" class="morelanguages">
+            <button  id="bulgarianLang" class="more" onclick="setLanguage('bg')"><img src="pictures/Bulgarianflag.png" width="20px" >Български</button>
+            <button  id="germanLang" class="more" onclick="setLanguage('de')"><img src="pictures/German_flag.png" width="20px" > Deutsch </button>
+            <button  id="englishLang" class="more" onclick="setLanguage('en')"><img src="pictures/gb.png" width="20px" >English</button>
+            <button  id="turkishLang" class="more" onclick="setLanguage('tr')"><img src="pictures/tyr.png" width="20px" >Turkish</button>
+            <button  id="frenchLang" class="more" onclick="setLanguage('fr')"><img src="pictures/fr.png" width="20px" >French</button>
+        </div>
+        <div id="more_div" class="more_div" >
+            <button class="profile_account">
+                <div class="profile-dropdown" id="profileDropdown">
+                    <img id="profilePicture" src="" alt="Profile Picture" class="profilepicture" class="inline-block">
+                    <img src="pictures/settings.icon.png" href="https://www.youtube.com/" style="width: 40px; height: 40px; display: inline-block; position: absolute; margin-left: 40px;">
+                    <div class="profile-info">
+                    </div><span id="username"></span>
+                    <button onclick="editProfile()" class="more" id="Editinformation">Edit Information</button>
+                </div>
+            </button>
+        </div>
+    </div>
+    </header>
+    <div id="searchResults"></div>
+    <div class="forum-container">
+        <div class="forum-header">
+            <h2 id="shareExperimentsTitle">Share Your Experiments</h2>
+        </div>
+
+        <div class="categories">
+            <div class="category" onclick="toggleCategory('chemistry')" id="chemistryCategory">Chemistry</div>
+            <div class="category" onclick="toggleCategory('physics')" id="physicsCategory">Physics</div>
+            <div class="category" onclick="toggleCategory('mathematics')" id="mathematicsCategory">Mathematics</div>
+            <div class="category" onclick="toggleCategory('biology')" id="biologyCategory">Biology</div>
+            <div class="category" onclick="toggleCategory('engineering')" id="engineeringCategory">Engineering</div>
+        </div>
+
+        <div class="predefined-experiments" id="predefinedExperiments">
+        </div>
+
+        <div class="forum-posts" id="forumPosts">
+        </div>
+
+        <div class="new-post-container">
+            <h3 id="newPostTitle">New Post</h3>
+            <input type="text" id="postTitle" placeholder="Title" aria-label="Post Title" >
+            <textarea id="postContent" rows="4" placeholder="Share your experiment..." aria-label="Post Content"></textarea>
+            <input type="file" id="postMedia" aria-label="Upload Media">
+            <input type="text" id="postYoutube" placeholder="YouTube Video URL" aria-label="YouTube Video URL">
+            <button id="postButton" onclick="addPost()">Post</button>
+        </div>
+    </div>
+
+    <a href="Main_page.html" class="back-button" aria-label="Back to Main Page" id="experimentsCenterBtn">Back to Main Page</a>
+</body>
+    <script>
+        let isDarkMode = false;
+        let currentCategory = null;
+        function openMinigames(){
+            window.location.href= "Mini_games.html";
+        }
+        function openExperimentsPage() {
+            window.location.href = "experiments.html";
+        }
+        function alignButtons(){
+            const container = document.getElementById("buttonContainer");
+            container.style.display = "flex"; 
+        }
+        function morelanguages() {
+            toggleVisibility("morelanguages");
+        }
+        function settings() {
+            toggleVisibility("more_div");
+        }
+        function toggleVisibility(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.style.visibility = (element.style.visibility === "hidden" || element.style.visibility === "") ? "visible" : "hidden";
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const forumContainer = document.querySelector('.forum-container'); // Select the forum container
+
+    searchForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/blackholes/search?q=${encodeURIComponent(query)}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const results = await response.json();
+
+            if (results.length > 0) {
+                forumContainer.style.display = 'none'; // Hide the entire forum container
+            } else {
+                forumContainer.style.display = 'block'; // Show the entire forum container
+            }
+
+            searchResults.innerHTML = results.length
+                ? results.map(item => `
+                    <div>
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                    </div>
+                `).join('')
+                : '<p>No results found</p>';
+
+        } catch (error) {
+            console.error('Search error:', error);
+            searchResults.innerHTML = '<p>Error searching.</p>';
+        }
+    });
+});
+    window.onload = function() {
+            const username = localStorage.getItem("username");
+            const email = localStorage.getItem("email");
+            const profilePicture = localStorage.getItem("profilePicture");
+            loadPredefinedExperiments();
+};
+
+        function toggleMode() {
+            document.body.classList.toggle("dark-mode");
+            isDarkMode = !isDarkMode;
+            document.getElementById("modeIcon").src = isDarkMode ? "pictures/dark.png" : "pictures/light.png";
+        }
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.classList.toggle("active");
+        }
+        function addPost() {
+            const title = document.getElementById("postTitle").value;
+            const content = document.getElementById("postContent").value;
+            const media = document.getElementById("postMedia").files[0];
+            const youtubeUrl = document.getElementById("postYoutube").value;
+            const username = "Guest";
+            const profilePicture = localStorage.getItem("profilePicture");
+
+            if (title && content) {
+                const postContainer = document.createElement("div");
+                postContainer.classList.add("forum-post");
+
+                const profileImg = document.createElement("img");
+                profileImg.src = profilePicture;
+                profileImg.alt = `${username}'s profile picture`;
+                profileImg.classList.add("profile-picture");
+
+                const postContentContainer = document.createElement("div");
+                postContentContainer.classList.add("forum-post-content");
+
+                const postTitle = document.createElement("h3");
+                postTitle.textContent = title;
+
+                const postContent = document.createElement("p");
+                const truncatedContent = document.createElement("span");
+                const fullContent = document.createElement("span");
+                const readMore = document.createElement("span");
+
+                truncatedContent.classList.add("truncated");
+                fullContent.classList.add("full-text");
+                readMore.classList.add("read-more");
+
+                truncatedContent.textContent = content.length > 100 ? content.substring(0, 100) : content;
+                fullContent.textContent = content;
+                readMore.textContent = content.length > 100 ? " ...Read more" : "";
+
+                readMore.addEventListener("click", function() {
+                    if (truncatedContent.style.display === "none") {
+                        truncatedContent.style.display = "inline";
+                        readMore.textContent = " ...Read more";
+                        fullContent.style.display = "none";
+                    } else {
+                        truncatedContent.style.display = "none";
+                        readMore.textContent = " Show less";
+                        fullContent.style.display = "inline";
+                    }
+                });
+
+                postContent.appendChild(truncatedContent);
+                postContent.appendChild(readMore);
+                postContent.appendChild(fullContent);
+
+                postContentContainer.appendChild(postTitle);
+                postContentContainer.appendChild(postContent);
+
+                if (media) {
+                    const mediaElement = document.createElement(media.type.startsWith("image/") ? "img" : "video");
+                    mediaElement.src = URL.createObjectURL(media);
+                    if (mediaElement.tagName === "VIDEO") {
+                        mediaElement.controls = true;
+                    }
+                    postContentContainer.appendChild(mediaElement);
+                }
+
+                if (youtubeUrl) {
+                    let youtubeId = youtubeUrl.split('v=')[1];
+                    if (youtubeId) {
+                        const ampersandPosition = youtubeId.indexOf('&');
+                        if (ampersandPosition !== -1) {
+                            youtubeId = youtubeId.substring(0, ampersandPosition);
+                        }
+                        const iframe = document.createElement("iframe");
+                        iframe.width = "560";
+                        iframe.height = "315";
+                        iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+                        iframe.frameBorder = "0";
+                        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        iframe.allowFullscreen = true;
+                        postContentContainer.appendChild(iframe);
+                    }
+                }
+
+                postContainer.appendChild(profileImg);
+                postContainer.appendChild(postContentContainer);
+
+                document.getElementById("forumPosts").appendChild(postContainer);
+
+                document.getElementById("postTitle").value = "";
+                document.getElementById("postContent").value = "";
+                document.getElementById("postMedia").value = "";
+                document.getElementById("postYoutube").value = "";
+            }
+        }
+        function loadPredefinedExperiments() {
+            const experiments = [
+                {
+                    title: "Baking Soda and Vinegar Volcano",
+                    description: "Create a fun and simple volcano using baking soda and vinegar.",
+                    category: "chemistry"
+                },
+                {
+                    title: "Invisible Ink",
+                    description: "Write secret messages using lemon juice and reveal them with heat.",
+                    category: "chemistry"
+                },
+                {
+                    title: "Homemade Slime",
+                    description: "Make your own slime using glue, baking soda, and contact lens solution.",
+                    category: "chemistry"
+                },
+                {
+                    title: "Pendulum Experiment",
+                    description: "Explore the physics of pendulums and how they work.",
+                    category: "physics"
+                },
+                {
+                    title: "Projectile Motion",
+                    description: "Understand the principles of projectile motion with simple experiments.",
+                    category: "physics"
+                },
+                {
+                    title: "Fibonacci Sequence",
+                    description: "Discover the beauty of the Fibonacci sequence in nature and mathematics.",
+                    category: "mathematics"
+                },
+                {
+                    title: "Plant Growth",
+                    description: "Study the factors affecting plant growth in different environments.",
+                    category: "biology"
+                },
+                {
+                    title: "Bridge Building",
+                    description: "Learn about engineering principles by building and testing model bridges.",
+                    category: "engineering"
+                }
+            ];
+            const container = document.getElementById("predefinedExperiments");
+        experiments.forEach(exp => {
+            const expContainer = document.createElement("div");
+            expContainer.classList.add("predefined-experiment");
+            expContainer.setAttribute("data-category", exp.category);
+
+            const expTitle = document.createElement("h3");
+            expTitle.textContent = exp.title;
+
+            const expDescription = document.createElement("p");
+            expDescription.textContent = exp.description;
+
+            expContainer.appendChild(expTitle);
+            expContainer.appendChild(expDescription);
+
+            container.appendChild(expContainer);
+            //make the experiments hidden on load.
+            expContainer.style.display = 'none';
+        });
+
+    }
+        function editProfile() {
+            window.location.href = "login.html";
+        }
+       
+    function toggleCategory(category) {
+        const experiments = document.querySelectorAll('.predefined-experiment');
+        const categoryExperiments = document.querySelectorAll(`.predefined-experiment[data-category="${category}"]`);
+
+        if (currentCategory === category) {
+            // If the same category is clicked again, show all experiments
+            experiments.forEach(exp => {
+                exp.style.display = 'none';
+            });
+            currentCategory = null; // Reset currentCategory
+        } else {
+            // Hide all experiments first
+            experiments.forEach(exp => {
+                exp.style.display = 'none';
+            });
+
+            // Show the experiments in the clicked category
+            categoryExperiments.forEach(exp => {
+                exp.style.display = 'block';
+            });
+
+            currentCategory = category;
+        }
+    }
+
+        const translations = {
+    en: {
+        mainTitle: "Science is Fun",
+        experimentsCenterBtn: "Back to Main Page",
+        chemistryCategory: "Chemistry",
+        physicsCategory: "Physics",
+        mathematicsCategory: "Mathematics",
+        biologyCategory: "Biology",
+        engineeringCategory: "Engineering",
+        shareExperimentsTitle: "Share Your Experiments",
+        newPostTitle: "New Post",
+        postButton: "Post",
+        searchInput: "Type your text",
+        postTitle: "Title",
+        postContent: "Share your experiment...",
+        postYoutube: "YouTube Video URL",
+        editProfile: "Edit Information"
+    },
+    bg: {
+        mainTitle: "Науката е Забавна",
+        experimentsCenterBtn: "Назад към Главната страница",
+        chemistryCategory: "Химия",
+        physicsCategory: "Физика",
+        mathematicsCategory: "Математика",
+        biologyCategory: "Биология",
+        engineeringCategory: "Инженерство",
+        shareExperimentsTitle: "Споделете Вашите Експерименти",
+        newPostTitle: "Нова Публикация",
+        postButton: "Публикувай",
+        searchInput: "Въведете текст",
+        postTitle: "Заглавие",
+        postContent: "Споделете вашия експеримент...",
+        postYoutube: "URL на YouTube видео",
+        editProfile: "Редактиране на информацията" 
+    },
+    tr: {
+        mainTitle: "Bilim Eğlencelidir",
+        experimentsCenterBtn: "Ana Sayfaya Geri Dön",
+        phybutton: "Fizik",
+        biobutton: "Biyoloji",
+        expbutton: "Mini oyunlar",
+        shareExperimentsTitle: "Deneylerinizi Paylaşın",
+        chemistryCategory: "Kimya",
+        physicsCategory: "Fizik",
+        mathematicsCategory: "Matematik",
+        biologyCategory: "Biyoloji",
+        engineeringCategory: "Mühendislik",
+        newPostTitle: "Yeni Gönderi",
+        postButton: "Gönder",
+        settingsBtn: "Ayarlar",
+        searchPlaceholder: "Metninizi yazın",
+        postTitlePlaceholder: "Başlık",
+        postContentPlaceholder: "Deneyinizi paylaşın...",
+        postYoutubePlaceholder: "YouTube Video URL'si",
+        editProfile: "Profili düzenle"
+    },
+    de: {
+        mainTitle: "Wissenschaft macht Spaß",
+        experimentsCenterBtn: "Zurück zur Hauptseite",
+        chemistryCategory: "Chemie",
+        physicsCategory: "Physik",
+        mathematicsCategory: "Mathematik",
+        biologyCategory: "Biologie",
+        engineeringCategory: "Ingenieurwesen",
+        shareExperimentsTitle: "Teilen Sie Ihre Experimente",
+        newPostTitle: "Neuer Beitrag",
+        postButton: "Posten",
+        searchInput: "Geben Sie Ihren Text ein",
+        postTitle: "Titel",
+        postContent: "Teilen Sie Ihr Experiment...",
+        postYoutube: "YouTube-Video-URL",
+        editProfile: "Informationen bearbeiten"
+    },
+    fr: {
+        mainTitle: "La science est amusante",
+        experimentsCenterBtn: "Retour à la page principale",
+        chemistryCategory: "Chimie",
+        physicsCategory: "Physique",
+        mathematicsCategory: "Mathématiques",
+        biologyCategory: "Biologie",
+        engineeringCategory: "Ingénierie",
+        shareExperimentsTitle: "Partagez Vos Expériences",
+        newPostTitle: "Nouveau Message",
+        postButton: "Publier",
+        searchInput: "Tapez votre texte",
+        postTitle: "Titre",
+        postContent: "Partagez votre expérience...",
+        postYoutube: "URL de vidéo YouTube",
+        editProfile: "Modifier les informations"
+    }
+
+    };
+
+    function setLanguage(lang) {
+    console.log("setLanguage called with:", lang);
+    const currentLangTranslations = translations[lang];
+    document.getElementById("mainTitle").textContent = currentLangTranslations.mainTitle;
+    document.getElementById("experimentsCenterBtn").textContent = currentLangTranslations.experimentsCenterBtn;
+    document.getElementById("chemistryCategory").textContent = currentLangTranslations.chemistryCategory;
+    document.getElementById("physicsCategory").textContent = currentLangTranslations.physicsCategory;
+    document.getElementById("mathematicsCategory").textContent = currentLangTranslations.mathematicsCategory;
+    document.getElementById("biologyCategory").textContent = currentLangTranslations.biologyCategory;
+    document.getElementById("engineeringCategory").textContent = currentLangTranslations.engineeringCategory;
+    document.getElementById("shareExperimentsTitle").textContent = currentLangTranslations.shareExperimentsTitle;
+    document.getElementById("newPostTitle").textContent = currentLangTranslations.newPostTitle;
+    document.getElementById("postButton").textContent = currentLangTranslations.postButton;
+    document.getElementById("searchInput").placeholder = currentLangTranslations.searchInput;
+    document.getElementById("postTitle").placeholder = currentLangTranslations.postTitle;
+    document.getElementById("postContent").placeholder = currentLangTranslations.postContent;
+    document.getElementById("postYoutube").placeholder = currentLangTranslations.postYoutube;
+    document.getElementById("Editinformation").textContent = currentLangTranslations.editProfile; 
+}
+window.onload = function() {
+            const username = localStorage.getItem("username");
+            loadPredefinedExperiments();
+            if (username) {
+                document.getElementById("username").textContent = username;
+            }
+            //set the profile picture.
+            setProfilePicture();
+        };
+        //set the profile picture in case the dom loads before the window.onload.
+        document.addEventListener('DOMContentLoaded', setProfilePicture);
+    function setProfilePicture() {
+            const profilePicture = localStorage.getItem("profilePicture");
+            const profileImageElement = document.getElementById("profilePicture");
+            if (profilePicture && profileImageElement) {
+                profileImageElement.src = profilePicture;
+            }
+        }
+    </script>
+
+</html>
